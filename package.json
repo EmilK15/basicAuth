@@ -1,0 +1,29 @@
+{
+  "name": "basicauth",
+  "version": "1.0.0",
+  "description": "going to create a basic session for the MERN stack",
+  "main": "index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.6",
+    "morgan": "^1.8.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EmilK15/basicAuth.git"
+  },
+  "author": "Emil Kais",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EmilK15/basicAuth/issues"
+  },
+  "homepage": "https://github.com/EmilK15/basicAuth#readme"
+}

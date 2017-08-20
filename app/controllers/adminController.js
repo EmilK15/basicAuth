@@ -1,7 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-	Admin = mongoose.model('Admin');
+var Admin = require('../models/database').models.admin;
 
 	exports.create_admin = function(req, res) {
 		var newAdmin = new Admin(req.body);
@@ -25,7 +24,7 @@ var mongoose = require('mongoose'),
 					err: err
 				});
 			else
-				res.json(admin)
+				res.json(admin);
 		});
 	};
 

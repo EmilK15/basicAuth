@@ -13,7 +13,8 @@ var adminSchema = new Schema({
 	username: {type: String, required: true, index: { unique: true}},
 	password: {type: String, required: true},
 	loginAttempts: {type: Number, required: true, default: 0},
-	lockUntil: {type: Number}	
+	lockUntil: {type: Number},
+	isAdmin: {type: Boolean, default: true}
 });
 
 adminSchema.virtual('isLocked').get(function() {

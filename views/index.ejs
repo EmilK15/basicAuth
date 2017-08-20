@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+    <meta charset = "utf-8">
+    <meta http-equiv = "X-UA-Compatible" content="IE=edge">
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+    <meta name = "description" content="Basic auth with node.js, express, react and mongodb">
+    <meta name = "author" content="EmilK">
+</head>
+	<title>basic MERN Auth</title>
+	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src = "..\node_modules\jquery-modal\jquery.modal.min.js"></script>
+
+	<link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<link rel = "stylesheet" href="..\public\stylesheets\mainPage.css">
+	<link rel = "stylesheet" href="..\public\stylesheets\jquery.modal.min.css">
+	
+	<!--front end validation-->
+	<script src = "..\node_modules\parsleyjs\dist\parsley.min.js" charset="utf-8"></script>
+	<body>
+	<% if (typeof message !== 'undefined' && message.length > 0) { %>
+		<div class = "alert alert-danger col-md-4 col-md-offset-4 fade-in alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times'</a>
+
+		</div>
+		<% } %>
+
+		<form class ="login-form" id ="authenticate" action="/api/login" method="POST">
+			<input class ="input" type="text" name="username" placeholder="Username" required>
+			<input class ="input" type="password" name="password" placeholder="Password" required>
+			<button class="btn btn-default" type="submit">Login</button>
+		</form>
+
+		<form class = "signup-form">
+			<a href= "#registerUser" rel ="modal:open"><button type="submit" class ="btn2 btn btn-default">Sign-up as User</button></a>
+		</form>
+
+		<form class = "signup-form">
+			<a href= "#registerAdmin" rel ="modal:open"><button type="submit" class ="btn2 btn btn-default">Sign-up as Admin</button></a>
+		</form>
+
+		<div class = "registerUser" id = "registerUser" style = "display:none;">
+			<form class = "register_login" data-parsley-validate action="/api/register" method = "POST">
+				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required>
+
+				<input class = "input_modal" type = "text" name = "username" placeholder = "Username" required data-parsley-pattern = "/^\w+$/" data-parsley-error-message = "Username must contain only letters, numbers and underscores.">
+
+				<input class = "input_modal" id = "passwordU" type = "password" name = "passwordU" placeholder = "Password" required data-parsley-pattern = "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/" data-parsley-error-message = "Passwords must contain at least one number, one lowercase and one uppercase letter. Passwords must be at least 6 characters long.">
+
+				<input class = "input_modal" id = "rpasswordU" type = "password" name = "rpasswordU" placeholder = "Re-type Password" required data-parsley-equalto = "#passwordU"  data-parsley-error-message = "Your password and confirmation do not match.">
+
+				<button class = "btn btn-default" type ="submit">Register</button>
+
+			</form>
+		</div>
+
+		<div class = "registerAdmin" id = "registerAdmin" style = "display:none;">
+			<form class = "register_login" data-parsley-validate action="/api/register" method = "POST">
+				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required>
+
+				<input class = "input_modal" type = "text" name = "username" placeholder = "Username" required data-parsley-pattern = "/^\w+$/" data-parsley-error-message = "Username must contain only letters, numbers and underscores.">
+
+				<input class = "input_modal" id = "passwordA" type = "password" name = "passwordA" placeholder = "Password" required data-parsley-pattern = "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/" data-parsley-error-message = "Passwords must contain at least one number, one lowercase and one uppercase letter. Passwords must be at least 6 characters long.">
+
+				<input class = "input_modal" id = "rpasswordA" type = "password" name = "rpasswordA" placeholder = "Re-type Password" required data-parsley-equalto = "#passwordA"  data-parsley-error-message = "Your password and confirmation do not match.">
+
+				<button class = "btn btn-default" type ="submit">Register</button>
+
+			</form>
+		</div>
+
+	</body>
+
+</html>

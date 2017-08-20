@@ -1,7 +1,6 @@
 'use strict'
 
-var mongoose = require('mongoose'),
-	User = mongoose.model('User');
+var User = require('../models/database').models.user;
 
 	exports.list_all_users = function(req, res) {
 		User.find({}, function(err, users) {

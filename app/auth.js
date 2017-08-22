@@ -114,7 +114,7 @@ module.exports = function(passport) {
 			if(!username || !password || !req.body.email){
 				return done(null, false, req.flash('message', 'not all values passed in'));
 			} else {
-				Admin.findOne({email: req.body.email}, function(err, admin){
+				Admin.findOne({ email: req.body.email }, function(err, admin){
 					if(!admin) {
 						var newUser = new User({
 							username,
@@ -141,7 +141,7 @@ module.exports = function(passport) {
 			if(!username || !password || !req.body.email) {
 				return done(null, false, req.flash('message', 'not all values passed in'));
 			} else {
-				User.findOne({email: req.body.email}, function(err, user){
+				User.findOne({ email: req.body.email }, function(err, user){
 					if(!user) {
 						var newAdmin = new Admin({
 							username,

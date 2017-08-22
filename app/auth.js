@@ -13,19 +13,14 @@ module.exports = function(passport) {
 	});
 
 	passport.deserializeUser(function(user, done) {
-		User.findById(id, function(err, user) {
-			done(err, user);
-		});
-	});
-
-	passport.serialzeAdmin(function(admin, done) {
-		done(null, admin.id);
-	});
-
-	passport.deserializeAdmin(function(admin, done) {
-		Admin.findById(id, function(err, admin) {
-			done(err, admin);
-		});
+		if(user.isAdmin)
+			Admin.findById(id, function(err, admin) {
+				done(err, admin);
+			}); 
+		else
+			User.findById(id, function(err, user) {
+				done(err, user);
+			});
 	});
 
 	passport.use('loginUser', new localStrategy({
@@ -50,7 +45,7 @@ module.exports = function(passport) {
 									return done(null, user);
 							});
 						}
-					} else {
+					} else { //if no match found, but username is correct
 						if(user.lockUntil)
 							return done(null, false, req.flash('message', 'You are locked out, try again soon'));
 						else {
@@ -63,10 +58,9 @@ module.exports = function(passport) {
 							return done(null, false, req.flash('message', 'Invalid credentials'));							
 						}
 					}//end of no match but incremented/locked out
-				});
+				});//end of comparePw
 			});
-		}
-	}));//end of loginUser endpoint
+		}));//end of loginUser endpoint
 
 	passport.use('loginAdmin', new localStrategy({
 		passReqToCallback: true},
@@ -105,8 +99,7 @@ module.exports = function(passport) {
 					}//end of no match but incremented/locked out
 				});
 			});
-		}
-	}));//end of loginAdmin endpoint
+		}));//end of loginAdmin endpoint
 
 	passport.use('registerUser', new localStrategy({
 		passReqToCallback: true},
@@ -116,6 +109,7 @@ module.exports = function(passport) {
 			} else {
 				Admin.findOne({ email: req.body.email }, function(err, admin){
 					if(!admin) {
+						console.log('no admin with same credentials found');
 						var newUser = new User({
 							username,
 							password,
@@ -132,8 +126,7 @@ module.exports = function(passport) {
 					}
 				});
 			}
-		}
-	}));
+		}));
 
 	passport.use('registerAdmin', new localStrategy({
 		passReqToCallback: true},
@@ -159,6 +152,5 @@ module.exports = function(passport) {
 					}
 				});
 			}
-		}
-	}));
+		}));
 }

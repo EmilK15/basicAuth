@@ -7,8 +7,10 @@ var app = express();
 var controller = require('./controllers/');
 
 app.use('/api', apiRoutes);
+var models = require('./models/database');
 
 var passport = require('passport');
+var auth = require('./auth')(passport);
 
 app.all('/*', function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -34,7 +36,13 @@ app.get('/', function(req, res) {
 		res.render('index', { message: req.flash('message')[0] });
 });
 
-apiRoutes.post('/registerUser', passport.authenticate('registerUser', {
+var customMiddleware = function(req, res, next) {
+	console.log('pinged a passport endpoint' );
+	console.log(req.body.username + ' ' + req.body.email);
+	return next();
+}
+
+apiRoutes.post('/registerUser', customMiddleware, passport.authenticate('registerUser', {
 	successRedirect: '/api/user',
 	failureRedirect: '/',
 	failureFlash: true
@@ -46,14 +54,18 @@ apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
 	failureFlash: true
 }));
 
+apiRoutes.get('/user', function(req, res) {
+	console.log('registerUser finished without error');
+});
+
 apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
-	successRedirect: '/api/admin',
+	successRedirect: '/api/admin/',
 	failureRedirect: '/',
 	failureFlash: true
 }));
 
 apiRoutes.post('/loginAdmin', passport.authenticate('loginAdmin', {
-	successRedirect: '/api/admin',
+	successRedirect: '/api/admin/',
 	failureRedirect: '/',
 	failureFlash: true
 }));

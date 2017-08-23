@@ -24,24 +24,24 @@ var User = require('../models/database').models.user;
 					err: err
 				});
 			else
-				res.json(user);
+				res.render('user', { username: user.username });
 		});
 	};
 
 	exports.read_user = function(req, res) {
-		User.findOne({ username: req.params.userId }, function(err, user) {
+		User.findOne({ username: req.params.username }, function(err, user) {
 			if(err)
 				res.json({
 					message: 'could not find user',
 					err: err
 				});
 			else
-				res.json(user);
+				res.render('user', { username: user.username });
 		});
 	};
 
 	exports.update_user = function(req, res) {
-		User.findOneAndUpdate({username: req.params.userId},
+		User.findOneAndUpdate({username: req.params.username},
 			req.body, { new: true }, function(err, user) {
 				if(err)
 					res.json({
@@ -49,12 +49,12 @@ var User = require('../models/database').models.user;
 						err: err
 					});
 				else
-					res.json(user);
+					res.render('user', { username: user.username });
 			});
 	};
 
 	exports.delete_user = function(req, res) {
-		User.remove({username: req.params.userId }, function(err, user) {
+		User.remove({username: req.params.username }, function(err, user) {
 			if(err)
 				res.json({
 					message: 'could not delete user',

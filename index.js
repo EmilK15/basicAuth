@@ -16,7 +16,7 @@ var server = require('http').Server(app);
 
 var sessionStore = new mongoStore({ url: config.database });
 
-app.use(express.static(__dirname + '/app/views'));
+app.use(express.static(__dirname + '/views'));
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());

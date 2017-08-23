@@ -5,12 +5,13 @@ var apiRoutes = express.Router();
 var app = express();
 
 var controller = require('./controllers/');
+var db = require('./models/database').models;
 
 app.use('/api', apiRoutes);
-var models = require('./models/database');
 
 var passport = require('passport');
-var auth = require('./auth')(passport);
+//changed to db.model for createConnection from mongoose
+var auth = require('./auth')(passport, db.user, db.admin);
 
 app.all('/*', function(req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -29,24 +30,20 @@ var ensureAuthorized = function(req, res, next) {
 app.get('/', function(req, res) {
 	if(req.user)
 		if(req.user.isAdmin)
-			res.redirect('/api/admin');
+			res.redirect('/api/admin/:' + req.user.username);
 		else
-			res.redirect('/api/user');
+			res.redirect('/api/user/:' + req.user.username);
 	else
 		res.render('index', { message: req.flash('message')[0] });
 });
 
-var customMiddleware = function(req, res, next) {
-	console.log('pinged a passport endpoint' );
-	console.log(req.body.username + ' ' + req.body.email);
-	return next();
-}
-
-apiRoutes.post('/registerUser', customMiddleware, passport.authenticate('registerUser', {
-	successRedirect: '/api/user',
+apiRoutes.post('/registerUser', passport.authenticate('registerUser', {
 	failureRedirect: '/',
 	failureFlash: true
-}));
+	}),
+	(req, res) => {
+		res.redirect('/api/user/:' + req.user.username);
+	});
 
 apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
 	successRedirect: '/api/user',
@@ -54,23 +51,19 @@ apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
 	failureFlash: true
 }));
 
-apiRoutes.get('/user', function(req, res) {
-	console.log('registerUser finished without error');
-});
-
 apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
-	successRedirect: '/api/admin/',
+	successRedirect: '/api/admin',
 	failureRedirect: '/',
 	failureFlash: true
 }));
 
 apiRoutes.post('/loginAdmin', passport.authenticate('loginAdmin', {
-	successRedirect: '/api/admin/',
+	successRedirect: '/api/admin',
 	failureRedirect: '/',
 	failureFlash: true
 }));
 
-apiRoutes.route('/user/:userId')
+apiRoutes.route('/user/:username')
 	.get(controller.userController.read_user)
 	.post(controller.userController.create_user)
 	.put(controller.userController.update_user)
@@ -79,7 +72,7 @@ apiRoutes.route('/user/:userId')
 apiRoutes.route('/users')
 	.get(controller.userController.list_all_users);
 
-apiRoutes.route('/admin/:userId')
+apiRoutes.route('/admin/:username')
 	.get(controller.adminController.read_admin)
 	.post(controller.adminController.create_admin)
 	.put(controller.adminController.update_admin)

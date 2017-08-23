@@ -17,7 +17,7 @@ var Admin = require('../models/database').models.admin;
 	};
 
 	exports.read_admin = function(req, res) {
-		Admin.findOne({username: req.body.userId}, function(err, admin) {
+		Admin.findOne({username: req.body.username}, function(err, admin) {
 			if(err)
 				res.json({
 					message: 'could not read admin',
@@ -29,7 +29,7 @@ var Admin = require('../models/database').models.admin;
 	};
 
 	exports.update_admin = function(req, res) {
-		Admin.findOneAndUpdate({username: req.params.userId},
+		Admin.findOneAndUpdate({username: req.params.username},
 			req.body, { new: true }, function(err, admin) {
 				if(err)
 					res.json({
@@ -42,7 +42,7 @@ var Admin = require('../models/database').models.admin;
 	};
 
 	exports.delete_admin = function(req, res) {
-		Admin.remove({username: req.params.userId }, function(err, admin) {
+		Admin.remove({username: req.params.username}, function(err, admin) {
 			if(err)
 				res.json({
 					message: 'could not delete admin',

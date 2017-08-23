@@ -1,13 +1,9 @@
 'use strict'
 
 var localStrategy = require('passport-local').Strategy;
-var mongoose = require('mongoose');
-var User = mongoose.model('User');
-var Admin = mongoose.model('Admin');
 
-
-module.exports = function(passport) {
-
+module.exports = function(passport, User, Admin) {
+	
 	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
@@ -107,9 +103,8 @@ module.exports = function(passport) {
 			if(!username || !password || !req.body.email){
 				return done(null, false, req.flash('message', 'not all values passed in'));
 			} else {
-				Admin.findOne({ email: req.body.email }, function(err, admin){
+				Admin.findOne({ username }, function(err, admin) {
 					if(!admin) {
-						console.log('no admin with same credentials found');
 						var newUser = new User({
 							username,
 							password,
@@ -122,7 +117,7 @@ module.exports = function(passport) {
 							return done(null, newUser);
 						});
 					} else {
-						return done(null, false, req.flash('message', 'Email in use already'));
+						return done(null, false, req.flash('message', 'Email or Username in use already'));
 					}
 				});
 			}

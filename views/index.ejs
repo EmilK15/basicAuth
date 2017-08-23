@@ -6,7 +6,7 @@
     <meta name = "description" content="Basic auth with node.js, express, and mongodb">
     <meta name = "author" content="EmilK">
 </head>
-	<title>basic MERN Auth</title>
+	<title>basic passport Auth</title>
 	<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src = "..\node_modules\jquery-modal\jquery.modal.min.js"></script>
@@ -46,9 +46,9 @@
 
 				<input class = "input_modal" type = "text" name = "username" placeholder = "Username" required data-parsley-pattern = "/^\w+$/" data-parsley-error-message = "Username must contain only letters, numbers and underscores.">
 
-				<input class = "input_modal" id = "passwordU" type = "password" name = "passwordU" placeholder = "Password" required data-parsley-pattern = "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/" data-parsley-error-message = "Passwords must contain at least one number, one lowercase and one uppercase letter. Passwords must be at least 6 characters long.">
+				<input class = "input_modal" id = "password" type = "password" name = "password" placeholder = "Password" required data-parsley-pattern = "/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/" data-parsley-error-message = "Passwords must contain at least one number, one lowercase and one uppercase letter. Passwords must be at least 6 characters long.">
 
-				<input class = "input_modal" id = "rpasswordU" type = "password" name = "rpasswordU" placeholder = "Re-type Password" required data-parsley-equalto = "#passwordU"  data-parsley-error-message = "Your password and confirmation do not match.">
+				<input class = "input_modal" id = "rpassword" type = "password" name = "rpassword" placeholder = "Re-type Password" required data-parsley-equalto = "#password"  data-parsley-error-message = "Your password and confirmation do not match.">
 
 				<button class = "btn btn-default" type ="submit">Register</button>
 

@@ -5,8 +5,9 @@ var bluebird = require('bluebird');
 var Mongoose = bluebird.promisifyAll(require('mongoose'));
 Mongoose.Promise = require('bluebird');
 
-Mongoose.createConnectionAsync(config.database)
-	.catch(function(err){
+let database = Mongoose.connectAsync(config.database, {
+	 	useMongoClient: true,
+	}).catch(function(err){
 		console.log(err);
 });
 
@@ -16,10 +17,10 @@ process.on('SIGINT', function() {
 	});
 });
 
-module.exports = {
-	Mongoose,
+module.exports = { 
+	database,
 	models: {
-		user: require('./user'),
+		user : require('./user'),
 		admin: require('./admin')
 	}
 };

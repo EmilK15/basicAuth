@@ -2,3 +2,8 @@
 	width: 100%;
 	margin-top: 10px;
 }
+.alert-danger {
+	justify-content: center;
+  	text-align: center;
+  	width: 100%;
+}

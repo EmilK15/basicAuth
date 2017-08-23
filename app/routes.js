@@ -27,23 +27,27 @@ var ensureAuthorized = function(req, res, next) {
 		res.redirect('/');
 }
 
+var pwPassportA = function(req, res, next) {
+	if(!req.body.password)
+		req.body.password = req.body.passwordA;
+	return next();
+}
+
 app.get('/', function(req, res) {
 	if(req.user)
 		if(req.user.isAdmin)
-			res.redirect('/api/admin/:' + req.user.username);
+			res.redirect('/api/admin');
 		else
-			res.redirect('/api/user/:' + req.user.username);
+			res.redirect('/api/user');
 	else
 		res.render('index', { message: req.flash('message')[0] });
 });
 
 apiRoutes.post('/registerUser', passport.authenticate('registerUser', {
+	successRedirect: '/api/user',
 	failureRedirect: '/',
 	failureFlash: true
-	}),
-	(req, res) => {
-		res.redirect('/api/user/:' + req.user.username);
-	});
+}));
 
 apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
 	successRedirect: '/api/user',
@@ -51,7 +55,7 @@ apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
 	failureFlash: true
 }));
 
-apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
+apiRoutes.post('/registerAdmin', pwPassportA, passport.authenticate('registerAdmin', {
 	successRedirect: '/api/admin',
 	failureRedirect: '/',
 	failureFlash: true
@@ -72,11 +76,19 @@ apiRoutes.route('/user/:username')
 apiRoutes.route('/users')
 	.get(controller.userController.list_all_users);
 
+apiRoutes.get('/user', ensureAuthorized, function(req, res) {
+	res.render('user', { username: req.user.username });
+});
+
 apiRoutes.route('/admin/:username')
 	.get(controller.adminController.read_admin)
 	.post(controller.adminController.create_admin)
 	.put(controller.adminController.update_admin)
 	.delete(controller.adminController.delete_admin);
+
+apiRoutes.get('/admin', ensureAuthorized, function(req, res) {
+	res.render('admin.ejs', { username: req.user.username });
+});
 
 apiRoutes.get('/logout', ensureAuthorized, function(req, res) {
 	req.logout();

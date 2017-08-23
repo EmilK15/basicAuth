@@ -24,7 +24,7 @@ var User = require('../models/database').models.user;
 					err: err
 				});
 			else
-				res.render('user', { username: user.username });
+				res.json(user);
 		});
 	};
 
@@ -36,7 +36,7 @@ var User = require('../models/database').models.user;
 					err: err
 				});
 			else
-				res.render('user', { username: user.username });
+				res.json(user);
 		});
 	};
 
@@ -49,7 +49,7 @@ var User = require('../models/database').models.user;
 						err: err
 					});
 				else
-					res.render('user', { username: user.username });
+					res.json(user);
 			});
 	};
 
@@ -61,6 +61,6 @@ var User = require('../models/database').models.user;
 					err: err
 				});
 			else
-				res.json({message: 'user deleted' });
+				res.json({ message: 'user deleted' });
 		});
 	};

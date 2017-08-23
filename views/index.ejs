@@ -20,7 +20,7 @@
 	<script src = "..\node_modules\parsleyjs\dist\parsley.min.js" charset="utf-8"></script>
 	<body>
 	<% if (typeof message !== 'undefined' && message.length > 0) { %>
-		<div class = "alert alert-danger col-md-4 col-md-offset-4 fade-in alert-dismissable">
+		<div class = "alert alert-danger col-md-4 fade-in alert-dismissable"><%= message %>
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times'</a>
 
 		</div>

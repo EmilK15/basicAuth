@@ -3,20 +3,21 @@
 var localStrategy = require('passport-local').Strategy;
 
 module.exports = function(passport, User, Admin) {
-	
+
 	passport.serializeUser(function(user, done) {
 		done(null, user.id);
 	});
 
 	passport.deserializeUser(function(user, done) {
-		if(user.isAdmin)
-			Admin.findById(id, function(err, admin) {
+		if(user.isAdmin) {
+			Admin.findById(user._id, function(err, admin) {
 				done(err, admin);
 			}); 
-		else
-			User.findById(id, function(err, user) {
+		} else {
+			User.findById(user._id, function(err, user) {
 				done(err, user);
 			});
+		}
 	});
 
 	passport.use('loginUser', new localStrategy({
@@ -103,7 +104,7 @@ module.exports = function(passport, User, Admin) {
 			if(!username || !password || !req.body.email){
 				return done(null, false, req.flash('message', 'not all values passed in'));
 			} else {
-				Admin.findOne({ username }, function(err, admin) {
+				Admin.findOne({ username, email: req.body.email }, function(err, admin) {
 					if(!admin) {
 						var newUser = new User({
 							username,
@@ -129,7 +130,7 @@ module.exports = function(passport, User, Admin) {
 			if(!username || !password || !req.body.email) {
 				return done(null, false, req.flash('message', 'not all values passed in'));
 			} else {
-				User.findOne({ email: req.body.email }, function(err, user){
+				User.findOne({ email: req.body.email, username }, function(err, user){
 					if(!user) {
 						var newAdmin = new Admin({
 							username,

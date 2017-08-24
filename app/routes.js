@@ -77,7 +77,8 @@ apiRoutes.route('/users')
 	.get(controller.userController.list_all_users);
 
 apiRoutes.get('/user', ensureAuthorized, function(req, res) {
-	res.render('user', { username: req.user.username });
+	console.log('got pinged');
+	res.render('user.ejs', { username: req.user.username });
 });
 
 apiRoutes.route('/admin/:username')
@@ -87,6 +88,7 @@ apiRoutes.route('/admin/:username')
 	.delete(controller.adminController.delete_admin);
 
 apiRoutes.get('/admin', ensureAuthorized, function(req, res) {
+	console.log('got pinged');
 	res.render('admin.ejs', { username: req.user.username });
 });
 

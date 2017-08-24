@@ -42,7 +42,7 @@
 
 		<div class = "registerUser" id = "registerUser" style = "display:none;">
 			<form class = "register_login" data-parsley-validate action="/api/registerUser" method = "POST">
-				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required>
+				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required data-parsley-error-message = "Email must be a valid one.">
 
 				<input class = "input_modal" type = "text" name = "username" placeholder = "Username" required data-parsley-pattern = "/^\w+$/" data-parsley-error-message = "Username must contain only letters, numbers and underscores.">
 
@@ -57,7 +57,7 @@
 
 		<div class = "registerAdmin" id = "registerAdmin" style = "display:none;">
 			<form class = "register_login" data-parsley-validate action="/api/registerAdmin" method = "POST">
-				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required>
+				<input class = "input_modal" type ="email" data-parsley-type = "email" name = "email" placeholder = "Email" required data-parsley-error-message = "Email must be a valid one.">
 
 				<input class = "input_modal" type = "text" name = "username" placeholder = "Username" required data-parsley-pattern = "/^\w+$/" data-parsley-error-message = "Username must contain only letters, numbers and underscores.">
 

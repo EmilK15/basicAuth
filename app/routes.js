@@ -44,11 +44,14 @@ apiRoutes.post('/registerUser', passport.authenticate('registerUser', {
 }));
 
 //loginUser is main endpt
-apiRoutes.post('/login', passport.authenticate('loginUser', {
-	successRedirect: '/api/user',
+apiRoutes.post('/login', passport.authenticate('login', {
 	failureRedirect: '/',
 	failureFlash: true
-}));
+	}), function(req, res) {
+		if(req.user.isAdmin)
+			res.redirect('/api/admin');
+		res.redirect('/api/user');
+});
 
 apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
 	successRedirect: '/api/admin',
@@ -82,14 +85,13 @@ apiRoutes.route('/admin/:username')
 	.delete(controller.adminController.delete_admin);
 
 apiRoutes.get('/admin', ensureAuthorized, function(req, res) {
-	console.log('got pinged');
 	res.render('admin.ejs', { username: req.user.username });
 });
 
 apiRoutes.get('/logout', ensureAuthorized, function(req, res) {
 	req.logout();
 	req.session.destroy();
-	res.redirect('/', { LogoutMessage: 'You have successfully logged out.'});
+	res.status(302).redirect('/');
 });
 
 app.use(function(req, res) {

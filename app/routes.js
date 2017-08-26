@@ -59,12 +59,6 @@ apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
 	failureFlash: true
 }));
 
-apiRoutes.post('/loginAdmin', passport.authenticate('loginAdmin', {
-	successRedirect: '/api/admin',
-	failureRedirect: '/',
-	failureFlash: true
-}));
-
 apiRoutes.route('/user/:username')
 	.get(controller.userController.read_user)
 	.post(controller.userController.create_user)

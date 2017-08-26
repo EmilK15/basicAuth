@@ -8,16 +8,15 @@ module.exports = function(passport, User, Admin) {
 		done(null, user.id);
 	});
 
-	passport.deserializeUser(function(user, done) {
-		if(user.isAdmin) {
-			Admin.findById(user._id, function(err, admin) {
+	passport.deserializeUser(function(id, done) {
+		Admin.findById(id, function(err, admin) {
+			if(err || !admin) {
+				User.findById(id, function(err, user) {
+					done(err, user);
+				});
+			} else
 				done(err, admin);
-			}); 
-		} else {
-			User.findById(user._id, function(err, user) {
-				done(err, user);
-			});
-		}
+		}); 
 	});
 
 	passport.use('loginUser', new localStrategy({
@@ -64,7 +63,7 @@ module.exports = function(passport, User, Admin) {
 	passport.use('loginAdmin', new localStrategy({
 		passReqToCallback: true},
 		function(req, username, password, done) {
-			Admin.findOne({ username }, function userFound(err, admin) {
+			Admin.findOne({ username }, function(err, admin) {
 				if(err || !admin)
 					return done(null, false, req.flash('message', 'Admin user not found'));
 				admin.comparePassword(password, function(err, isMatch) {
@@ -127,6 +126,7 @@ module.exports = function(passport, User, Admin) {
 		}));
 
 	passport.use('registerAdmin', new localStrategy({
+		passwordField: 'passwordA',
 		passReqToCallback: true},
 		function(req, username, password, done) {
 			if(!username || !password || !req.body.email) {

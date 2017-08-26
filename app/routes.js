@@ -27,12 +27,6 @@ var ensureAuthorized = function(req, res, next) {
 		res.redirect('/');
 }
 
-var pwPassportA = function(req, res, next) {
-	if(!req.body.password)
-		req.body.password = req.body.passwordA;
-	return next();
-}
-
 app.get('/', function(req, res) {
 	if(req.user)
 		if(req.user.isAdmin)
@@ -49,13 +43,14 @@ apiRoutes.post('/registerUser', passport.authenticate('registerUser', {
 	failureFlash: true
 }));
 
-apiRoutes.post('/loginUser', passport.authenticate('loginUser', {
+//loginUser is main endpt
+apiRoutes.post('/login', passport.authenticate('loginUser', {
 	successRedirect: '/api/user',
 	failureRedirect: '/',
 	failureFlash: true
 }));
 
-apiRoutes.post('/registerAdmin', pwPassportA, passport.authenticate('registerAdmin', {
+apiRoutes.post('/registerAdmin', passport.authenticate('registerAdmin', {
 	successRedirect: '/api/admin',
 	failureRedirect: '/',
 	failureFlash: true
@@ -77,7 +72,6 @@ apiRoutes.route('/users')
 	.get(controller.userController.list_all_users);
 
 apiRoutes.get('/user', ensureAuthorized, function(req, res) {
-	console.log('got pinged');
 	res.render('user.ejs', { username: req.user.username });
 });
 
